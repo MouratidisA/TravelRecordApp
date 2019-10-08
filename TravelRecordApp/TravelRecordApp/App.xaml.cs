@@ -7,7 +7,8 @@ namespace TravelRecordApp
 {
     public partial class App : Application
     {
-        public string DatabaseLocation = string.Empty;
+        public static string DatabaseLocation = string.Empty;
+
         public App()
         {
             InitializeComponent();
