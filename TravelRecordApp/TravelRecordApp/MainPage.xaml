@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TravelRecordApp"
+             x:Class="TravelRecordApp.MainPage">
+
+    <StackLayout 
+        VerticalOptions="Center" 
+        Margin="20,0">
+        <Entry 
+            x:Name="EmailEntry"
+            Placeholder="Email address" 
+            Keyboard="Email"
+            TextColor="{StaticResource BlueColor}"/>
+        <Entry 
+            x:Name="PasswordEntry"
+            Placeholder="Password" 
+            IsPassword="True"
+            TextColor="{StaticResource BlueColor}"/>
+        <Button 
+            x:Name="LoginButton" 
+            Text="Log in" 
+            Clicked="LoginButton_Clicked" 
+            Margin="0,50,0,0"
+            Style="{StaticResource NormalButton}"/>
+    </StackLayout>
+
+</ContentPage>
