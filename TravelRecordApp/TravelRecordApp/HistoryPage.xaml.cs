@@ -10,13 +10,13 @@ using Xamarin.Forms.Xaml;
 
 namespace TravelRecordApp
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class HistoryPage : ContentPage
-	{
-		public HistoryPage ()
-		{
-			InitializeComponent ();
-		}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class HistoryPage : ContentPage
+    {
+        public HistoryPage()
+        {
+            InitializeComponent();
+        }
 
 
         protected override void OnAppearing()
@@ -26,8 +26,9 @@ namespace TravelRecordApp
             {
                 conn.CreateTable<Post>();
                 var posts = conn.Table<Post>().ToList();
+                PostListView.ItemsSource = posts;
             }
-            
+
         }
     }
 }
