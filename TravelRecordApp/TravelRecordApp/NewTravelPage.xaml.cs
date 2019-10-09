@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Plugin.Geolocator;
+﻿using Plugin.Geolocator;
 using SQLite;
+using System;
+using System.Collections.Generic;
 using TravelRecordApp.Logic;
 using TravelRecordApp.Model;
 using Xamarin.Forms;
@@ -12,13 +9,13 @@ using Xamarin.Forms.Xaml;
 
 namespace TravelRecordApp
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class NewTravelPage : ContentPage
-	{
-		public NewTravelPage ()
-		{
-			InitializeComponent ();
-		}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class NewTravelPage : ContentPage
+    {
+        public NewTravelPage()
+        {
+            InitializeComponent();
+        }
 
         protected override async void OnAppearing()
         {
@@ -26,8 +23,11 @@ namespace TravelRecordApp
 
             var locator = CrossGeolocator.Current;
             var position = await locator.GetPositionAsync();
-
             var venues = await VenueLogic.GetVenues(position.Latitude, position.Longitude);
+            
+
+            VenueListView.ItemsSource = venues;
+            
         }
 
         private void SaveButton_Clicked(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace TravelRecordApp
                 else
                     DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
             }
-            
+
         }
     }
 }

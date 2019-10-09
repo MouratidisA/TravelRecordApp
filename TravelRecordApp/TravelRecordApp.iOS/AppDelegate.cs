@@ -23,7 +23,7 @@ namespace TravelRecordApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            Xamarin.FormsMaps.Init();   
+            Xamarin.FormsMaps.Init();
 
             string dbName = "travel_db.sqlite";
             string folderPath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.Personal),"..","Library");
