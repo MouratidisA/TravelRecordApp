@@ -1,7 +1,7 @@
 ﻿using Plugin.Geolocator;
 using SQLite;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using TravelRecordApp.Logic;
 using TravelRecordApp.Model;
 using Xamarin.Forms;
@@ -32,20 +32,39 @@ namespace TravelRecordApp
 
         private void SaveButton_Clicked(object sender, EventArgs e)
         {
-            Post post = new Post()
+            try
             {
-                Experience = ExperienceEntry.Text
-            };
+                var selectedVenue = VenueListView.SelectedItem as Venue;
+                Post post = new Post()
+                {
+                    Experience = ExperienceEntry.Text,
+                    CategoryId = selectedVenue.categories.FirstOrDefault().id,
+                    CategoryName = selectedVenue.categories.FirstOrDefault().name,
+                    Address = selectedVenue.location.address,
+                    Distance = selectedVenue.location.distance,
+                    Latitude = selectedVenue.location.lat,
+                    Longitude = selectedVenue.location.lng,
+                    VenueName = selectedVenue.name
+                };
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                {
+                    conn.CreateTable<Post>();
+                    int rows = conn.Insert(post);
+
+                    if (rows > 0)
+                        DisplayAlert("Success", "Experience successfully inserted", "Ok");
+                    else
+                        DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
+                }
+            }
+            catch (NullReferenceException nllEx)
             {
-                conn.CreateTable<Post>();
-                int rows = conn.Insert(post);
-
-                if (rows > 0)
-                    DisplayAlert("Success", "Experience successfully inserted", "Ok");
-                else
-                    DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
+                //TODO implement error handling for null exception
+            }
+            catch (Exception ex)
+            {
+                //TODO implement error handling for generic exception for post model creation
             }
 
         }
