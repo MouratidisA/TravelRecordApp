@@ -42,7 +42,7 @@ namespace TravelRecordApp
                 if (status == PermissionStatus.Granted)
                 {
                     _hasLocationPermission = true;
-                    locationsMap.IsShowingUser = true;
+                    LocationsMap.IsShowingUser = true;
                     GetLocation();
                 }
                 else
