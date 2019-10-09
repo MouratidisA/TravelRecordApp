@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using SQLite;
+using TravelRecordApp.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -24,8 +27,6 @@ namespace TravelRecordApp
         {
             try
             {
-
-
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.LocationWhenInUse);
                 if (status != PermissionStatus.Granted)
                 {
@@ -67,6 +68,44 @@ namespace TravelRecordApp
 
             GetLocation();
 
+            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            {
+                conn.CreateTable<Post>();
+                var posts = conn.Table<Post>().ToList();
+
+                DisplayInMap(posts);
+            }
+
+
+        }
+
+        private void DisplayInMap(List<Post> posts)
+        {
+            foreach (var post in posts)
+            {
+                try
+                {
+                    var position = new Xamarin.Forms.Maps.Position(post.Latitude, post.Longitude);
+
+                    var pin = new Xamarin.Forms.Maps.Pin()
+                    {
+                        Type = PinType.SavedPin,
+                        Position = position,
+                        Label = post.VenueName,
+                        Address = post.Address
+                    };
+
+                    LocationsMap.Pins.Add(pin);
+                }
+                catch (NullReferenceException nllEx)
+                {
+                    //TODO implement error handling for null exception [DisplayMap]
+                }
+                catch (Exception ex)
+                {
+                    //TODO implement error handling for exception [DisplayMap]
+                }
+            }
         }
 
         protected override void OnDisappearing()
@@ -94,7 +133,7 @@ namespace TravelRecordApp
 
         private void MoveMap(Plugin.Geolocator.Abstractions.Position position)
         {
-            locationsMap.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 1, 1));
+            LocationsMap.MoveToRegion(new MapSpan(new Position(position.Latitude, position.Longitude), 1, 1));
         }
     }
 }
