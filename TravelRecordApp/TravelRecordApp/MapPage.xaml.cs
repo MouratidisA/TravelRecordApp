@@ -68,13 +68,19 @@ namespace TravelRecordApp
 
             GetLocation();
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<Post>();
-                var posts = conn.Table<Post>().ToList();
+            #region SQLite Implementation
+            //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            //{
+            //    conn.CreateTable<Post>();
+            //    var posts = conn.Table<Post>().ToList();
 
-                DisplayInMap(posts);
-            }
+            //    DisplayInMap(posts);
+            //}            
+            #endregion
+
+
+            var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.User.Id).ToListAsync();
+            DisplayInMap(posts);
 
 
         }
