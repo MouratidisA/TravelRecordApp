@@ -1,42 +1,144 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using SQLite;
 
 namespace TravelRecordApp.Model
 {
-    public class Post
+    public class Post : INotifyPropertyChanged
     {
-        [PrimaryKey,AutoIncrement]
-        public int Id { get; set; }
-        [MaxLength(250)]
-        public string Experience { get; set; }
 
-        public string VenueName { get; set; }
-        public string CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string Address { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public int Distance { get; set; }
+        private int _id;
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                OnPropertyChanged("Id");
+            }
+        }
 
-        public string UserId { get; set; }
+        private string _experience;
+        public string Experience
+        {
+            get { return _experience; }
+            set
+            {
+                _experience = value;
+                OnPropertyChanged("Experience");
+            }
+        }
+
+        private string _venueName;
+        public string VenueName
+        {
+            get { return _venueName; }
+            set
+            {
+                _venueName = value;
+                OnPropertyChanged("VenueName");
+            }
+        }
+
+        private string _categoryId;
+        public string CategoryId
+        {
+            get { return _categoryId; }
+            set
+            {
+                _categoryId = value;
+                OnPropertyChanged("CategoryId");
+            }
+        }
+
+        private string _categoryName;
+        public string CategoryName
+        {
+            get { return _categoryName; }
+            set
+            {
+                _categoryName = value;
+                OnPropertyChanged("CategoryName");
+            }
+        }
+
+        private string _address;
+        public string Address
+        {
+            get { return _address; }
+            set
+            {
+                _address = value;
+                OnPropertyChanged("Address");
+            }
+        }
+
+        private double _latitude;
+        public double Latitude
+        {
+            get { return _latitude; }
+            set
+            {
+                _latitude = value;
+                OnPropertyChanged("Latitude");
+            }
+        }
+
+        private double _longitude;
+        public double Longitude
+        {
+            get { return _longitude; }
+            set
+            {
+                _longitude = value;
+                OnPropertyChanged("Longitude");
+            }
+        }
+
+        private int _distance;
+        public int Distance
+        {
+            get { return _distance; }
+            set
+            {
+                _distance = value;
+                OnPropertyChanged("Distance");
+            }
+        }
+
+
+        private string _userId;
+        public string UserId
+        {
+            get { return _userId; }
+            set
+            {
+                _userId = value;
+                OnPropertyChanged("UserId");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
 
         public static async void Insert(Post post)
         {
             await App.MobileService.GetTable<Post>().InsertAsync(post);
         }
+
         public static async Task<List<Post>> Read()
         {
-            return await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.User.Id).ToListAsync();          
+            return await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.User.Id).ToListAsync();
         }
-        public static Dictionary<string,int> ReadPostCategories(List<Post> posts)
+
+        public static Dictionary<string, int> ReadPostCategories(List<Post> posts)
         {
-            var categories = (from p in posts orderby p.CategoryId select p.CategoryName).Distinct().ToList();
+            var categories = (from p in posts orderby p._categoryId select p.CategoryName).Distinct().ToList();
 
             Dictionary<string, int> categoriesCount = new Dictionary<string, int>();
 
