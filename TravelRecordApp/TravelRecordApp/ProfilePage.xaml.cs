@@ -1,7 +1,4 @@
-﻿using SQLite;
-using System.Collections.Generic;
-using System.Linq;
-using TravelRecordApp.Model;
+﻿using TravelRecordApp.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -41,16 +38,9 @@ namespace TravelRecordApp
             //}
             #endregion
 
-            var postTable = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.User.Id).ToListAsync();
-            var categories = (from p in postTable orderby p.CategoryId select p.CategoryName).Distinct().ToList();
+            var postTable = await Post.Read();
 
-            Dictionary<string, int> categoriesCount = new Dictionary<string, int>();
-            foreach (var category in categories)
-            {
-                var count = (from post in postTable where post.CategoryName == category select post).ToList().Count;
-
-                categoriesCount.Add(category, count);
-            }
+            var categoriesCount = Post.ReadPostCategories(postTable);
 
             CategoryListView.ItemsSource = categoriesCount;
 

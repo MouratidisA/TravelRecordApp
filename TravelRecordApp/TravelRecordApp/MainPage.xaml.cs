@@ -17,30 +17,10 @@ namespace TravelRecordApp
 
         private async void LoginButton_Clicked(object sender, EventArgs e)
         {
-            bool isEmailEmpty = string.IsNullOrEmpty(EmailEntry.Text);
-            bool isPasswordEmpty = string.IsNullOrEmpty(PasswordEntry.Text);
-
-
-            if (isEmailEmpty || isPasswordEmpty)
-            {
-
-            }
+            if (await User.Login(EmailEntry.Text, PasswordEntry.Text))
+                await Navigation.PushAsync(new HomePage());
             else
-            {
-                var user = (await App.MobileService.GetTable<User>().Where(u => u.Email == EmailEntry.Text).ToListAsync()).FirstOrDefault();
-                if (user != null)
-                {
-                    if (user.Password == PasswordEntry.Text)
-                    {
-                        App.User = user;
-                        await Navigation.PushAsync(new HomePage());
-                    }                        
-                    else
-                        await DisplayAlert("Error", "Email or Password are incorrect", "Ok");
-                }
-                else
-                    await DisplayAlert("Error", "There was an error logging you in", "Ok");
-            }
+                await DisplayAlert("Error", "Try again", "Ok");
         }
 
         private void RegisterButton_Clicked(object sender, EventArgs e)

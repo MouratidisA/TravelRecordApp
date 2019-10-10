@@ -1,8 +1,6 @@
 ﻿using Plugin.Geolocator;
-using SQLite;
 using System;
 using System.Linq;
-using TravelRecordApp.Logic;
 using TravelRecordApp.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -23,7 +21,7 @@ namespace TravelRecordApp
 
             var locator = CrossGeolocator.Current;
             var position = await locator.GetPositionAsync();
-            var venues = await VenueLogic.GetVenues(position.Latitude, position.Longitude);
+            var venues = await Venue.GetVenues(position.Latitude, position.Longitude);
 
 
             VenueListView.ItemsSource = venues;
@@ -61,7 +59,7 @@ namespace TravelRecordApp
                 //}
                 #endregion
 
-                await App.MobileService.GetTable<Post>().InsertAsync(post);
+                Post.Insert(post);
                 await DisplayAlert("Success", "Experience successfully inserted", "Ok");
             }
             catch (NullReferenceException nllEx)
