@@ -24,13 +24,13 @@ namespace TravelRecordApp
             var locator = CrossGeolocator.Current;
             var position = await locator.GetPositionAsync();
             var venues = await VenueLogic.GetVenues(position.Latitude, position.Longitude);
-            
+
 
             VenueListView.ItemsSource = venues;
-            
+
         }
 
-        private void SaveButton_Clicked(object sender, EventArgs e)
+        private async void SaveButton_Clicked(object sender, EventArgs e)
         {
             try
             {
@@ -44,27 +44,33 @@ namespace TravelRecordApp
                     Distance = selectedVenue.location.distance,
                     Latitude = selectedVenue.location.lat,
                     Longitude = selectedVenue.location.lng,
-                    VenueName = selectedVenue.name
+                    VenueName = selectedVenue.name,
+                    UserId = App.User.Id
                 };
 
-                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-                {
-                    conn.CreateTable<Post>();
-                    int rows = conn.Insert(post);
+                #region SQLite Implementation
+                //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                //{
+                //    conn.CreateTable<Post>();
+                //    int rows = conn.Insert(post);
 
-                    if (rows > 0)
-                        DisplayAlert("Success", "Experience successfully inserted", "Ok");
-                    else
-                        DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
-                }
+                //    if (rows > 0)
+                //        DisplayAlert("Success", "Experience successfully inserted", "Ok");
+                //    else
+                //        DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
+                //}
+                #endregion
+
+                await App.MobileService.GetTable<Post>().InsertAsync(post);
+                await DisplayAlert("Success", "Experience successfully inserted", "Ok");
             }
             catch (NullReferenceException nllEx)
             {
-                //TODO implement error handling for null exception
+                await DisplayAlert("Failure", "Experience failed to be inserted" + nllEx.Message, "Ok");
             }
             catch (Exception ex)
             {
-                //TODO implement error handling for generic exception for post model creation
+                await DisplayAlert("Failure", "Experience failed to be inserted" + ex.Message, "Ok");
             }
 
         }

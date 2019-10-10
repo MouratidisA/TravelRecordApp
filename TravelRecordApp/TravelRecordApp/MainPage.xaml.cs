@@ -31,7 +31,10 @@ namespace TravelRecordApp
                 if (user != null)
                 {
                     if (user.Password == PasswordEntry.Text)
+                    {
+                        App.User = user;
                         await Navigation.PushAsync(new HomePage());
+                    }                        
                     else
                         await DisplayAlert("Error", "Email or Password are incorrect", "Ok");
                 }
