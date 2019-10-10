@@ -10,9 +10,13 @@ namespace TravelRecordApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewTravelPage : ContentPage
     {
+        private Post post;
+
         public NewTravelPage()
         {
             InitializeComponent();
+            post = new Post();
+            ContainerStackLayout.BindingContext = post;
         }
 
         protected override async void OnAppearing()
@@ -33,18 +37,18 @@ namespace TravelRecordApp
             try
             {
                 var selectedVenue = VenueListView.SelectedItem as Venue;
-                Post post = new Post()
+
+                if (selectedVenue != null)
                 {
-                    Experience = ExperienceEntry.Text,
-                    CategoryId = selectedVenue.categories.FirstOrDefault().id,
-                    CategoryName = selectedVenue.categories.FirstOrDefault().name,
-                    Address = selectedVenue.location.address,
-                    Distance = selectedVenue.location.distance,
-                    Latitude = selectedVenue.location.lat,
-                    Longitude = selectedVenue.location.lng,
-                    VenueName = selectedVenue.name,
-                    UserId = App.User.Id
-                };
+                    post.CategoryId = selectedVenue.categories.FirstOrDefault()?.id;
+                    post.CategoryName = selectedVenue.categories.FirstOrDefault()?.name;
+                    post.Address = selectedVenue.location.address;
+                    post.Distance = selectedVenue.location.distance;
+                    post.Latitude = selectedVenue.location.lat;
+                    post.Longitude = selectedVenue.location.lng;
+                    post.VenueName = selectedVenue.name;
+                    post.UserId = App.User.Id;
+                }
 
                 #region SQLite Implementation
                 //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
