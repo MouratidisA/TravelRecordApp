@@ -19,16 +19,21 @@ namespace TravelRecordApp
         }
 
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<Post>();
-                var posts = conn.Table<Post>().ToList();
-                PostListView.ItemsSource = posts;
-            }
 
+            #region SQLite Implementation
+            //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            //{
+            //    conn.CreateTable<Post>();
+            //    var posts = conn.Table<Post>().ToList();
+            //    PostListView.ItemsSource = posts;
+            //}
+            #endregion
+
+            var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.User.Id).ToListAsync();
+            PostListView.ItemsSource = posts;
         }
 
         void Handle_ItemSelected(Object sender,SelectedItemChangedEventArgs e)
