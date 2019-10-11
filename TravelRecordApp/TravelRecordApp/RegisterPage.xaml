@@ -4,6 +4,7 @@
              x:Class="TravelRecordApp.RegisterPage">
     <StackLayout 
         x:Name="ContainerStackLayout"
+        CompressedLayout.IsHeadless="True"
         VerticalOptions="Center" 
         Margin="20,0">
         

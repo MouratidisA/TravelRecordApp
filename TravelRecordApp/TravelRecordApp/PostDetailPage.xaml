@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TravelRecordApp.PostDetailPage">
- 
 
-    <StackLayout x:Name="StackLayout" Margin="16,20,16,0">
+
+    <StackLayout x:Name="StackLayout" Margin="16,20,16,0" CompressedLayout.IsHeadless="True" >
         <Entry x:Name="ExperienceEntry" Text="I love to work here"/>
         <Label x:Name="VenueLabel" Margin="0,30,0,0" FontAttributes="Bold" FontSize="22" Text="Some Fancy coworking"/>
         <Label x:Name="CategoryLabel" Text="Coworking space" TextColor="{StaticResource BlueColor}"/>
