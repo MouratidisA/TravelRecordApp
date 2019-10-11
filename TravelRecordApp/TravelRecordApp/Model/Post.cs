@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace TravelRecordApp.Model
 {
@@ -118,6 +119,47 @@ namespace TravelRecordApp.Model
                 OnPropertyChanged("UserId");
             }
         }
+
+
+        private Venue _venue;
+
+        [JsonIgnore]
+        public Venue Venue
+        {
+            get { return _venue; }
+            set
+            {
+                _venue = value;
+
+
+                if (_venue.categories != null)
+                {
+                    var firstCategory = _venue.categories.FirstOrDefault();
+
+                    if (firstCategory != null)
+                    {
+                        CategoryId = firstCategory.id;
+                        CategoryName = firstCategory.name;
+                    }
+                }
+
+
+                if (_venue.location != null)
+                {
+                    Address = _venue.location.address;
+                    Distance = _venue.location.distance;
+                    Latitude = _venue.location.lat;
+                    Longitude = _venue.location.lng;
+                }
+
+
+                VenueName = _venue.name;
+                UserId = App.User.Id;
+
+                OnPropertyChanged("Venue");
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)

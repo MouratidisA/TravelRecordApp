@@ -23,11 +23,13 @@
             x:Name="ConfirmPasswordEntry"
             Placeholder="Confirm Password" 
             IsPassword="True"
+            Text="{Binding ConfirmPassword,Mode=TwoWay}"
             TextColor="{StaticResource BlueColor}"/>
         <Button 
             x:Name="RegisterButton" 
             Text="Register" 
-            Clicked="RegisterButton_Clicked" 
+            Command="{Binding RegisterCommand}" 
+            CommandParameter="{Binding User}"
             Margin="0,50,0,0"
             Style="{StaticResource NormalButton}"/>
     </StackLayout>

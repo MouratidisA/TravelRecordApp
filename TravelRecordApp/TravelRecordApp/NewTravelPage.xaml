@@ -4,13 +4,13 @@
              x:Class="TravelRecordApp.NewTravelPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Clicked="SaveButton_Clicked" IconImageSource="save.png"></ToolbarItem>
+        <ToolbarItem Text="Save" Command="{Binding PostCommand}" CommandParameter="{Binding Post}" IconImageSource="save.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout x:Name="ContainerStackLayout">
+        <StackLayout x:Name="ContainerStackLayout"  >
             <Entry x:Name="ExperienceEntry" Text="{Binding Experience,Mode=TwoWay}" Placeholder="Write your Experience"/>
-            <ListView x:Name="VenueListView" Margin="20,0" HorizontalOptions="FillAndExpand">
+            <ListView x:Name="VenueListView" SelectedItem="{Binding Venue,Mode=TwoWay}" Margin="20,0" HorizontalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
