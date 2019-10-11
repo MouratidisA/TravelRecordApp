@@ -1,4 +1,5 @@
 ﻿using System;
+using TravelRecordApp.Helpers;
 using TravelRecordApp.Model;
 using TravelRecordApp.ViewModel;
 using Xamarin.Forms;
@@ -19,7 +20,7 @@ namespace TravelRecordApp
         }
 
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
@@ -34,6 +35,8 @@ namespace TravelRecordApp
 
 
             ViewModel.UpdatePosts();
+
+            await AzureAppServiceHelper.SyncAsync();
         }
 
         void Handle_ItemSelected(Object sender, SelectedItemChangedEventArgs e)
@@ -56,6 +59,7 @@ namespace TravelRecordApp
         private async void PostListView_OnRefreshing(object sender, EventArgs e)
         {
             await ViewModel.UpdatePosts();
+            await AzureAppServiceHelper.SyncAsync();
             PostListView.IsRefreshing = false;
         }
     }

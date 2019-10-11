@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace TravelRecordApp.Model
 {
@@ -181,13 +182,15 @@ namespace TravelRecordApp.Model
 
         public static async void Insert(Post post)
         {
-            await App.MobileService.GetTable<Post>().InsertAsync(post);
+            await App.PostsTable.InsertAsync(post);
+            await App.MobileService.SyncContext.PushAsync();
         }
         public static async Task<bool> Delete(Post post)
         {
             try
             {
-                await App.MobileService.GetTable<Post>().DeleteAsync(post);
+                await App.PostsTable.DeleteAsync(post);
+                await App.MobileService.SyncContext.PushAsync();
                 return true;
             }
             catch (Exception)
@@ -198,7 +201,7 @@ namespace TravelRecordApp.Model
 
         public static async Task<List<Post>> Read()
         {
-            return await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.User.Id).ToListAsync();
+            return await App.PostsTable.Where(p => p.UserId == App.User.Id).ToListAsync();
         }
 
         public static Dictionary<string, int> ReadPostCategories(List<Post> posts)
