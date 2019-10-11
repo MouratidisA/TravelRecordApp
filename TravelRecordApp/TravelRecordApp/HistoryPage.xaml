@@ -12,10 +12,12 @@
     </ContentPage.Resources>
 
 
-    <ListView x:Name="PostListView" ItemSelected="Handle_ItemSelected">
+    <ListView x:Name="PostListView" ItemSelected="Handle_ItemSelected" ItemsSource="{Binding Posts}">
         <ListView.ItemTemplate>
             <DataTemplate>
-                <TextCell Text="{Binding Experience}" Detail="{Binding CreateDate,Converter={StaticResource Converter}}"></TextCell>
+                <TextCell 
+                    Text="{Binding Experience}" 
+                    Detail="{Binding CreateDate,Converter={StaticResource Converter}}"/>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
