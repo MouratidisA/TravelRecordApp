@@ -7,17 +7,25 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-                <Converters:DateTimeToStringConverter x:Key="Converter"/>
+            <Converters:DateTimeToStringConverter x:Key="Converter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
 
-    <ListView x:Name="PostListView" ItemSelected="Handle_ItemSelected" ItemsSource="{Binding Posts}">
+    <ListView x:Name="PostListView" ItemSelected="Handle_ItemSelected" ItemsSource="{Binding Posts}" IsPullToRefreshEnabled="True" Refreshing="PostListView_OnRefreshing">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <TextCell 
                     Text="{Binding Experience}" 
-                    Detail="{Binding CreateDate,Converter={StaticResource Converter}}"/>
+                    Detail="{Binding CreateDate,Converter={StaticResource Converter}}">
+                    <TextCell.ContextActions>
+                        <MenuItem 
+                            Text="Delete" 
+                            Clicked="DeleteMenuItem_Clicked" 
+                            CommandParameter="{Binding}" 
+                            IsDestructive="True"/>
+                    </TextCell.ContextActions>
+                </TextCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

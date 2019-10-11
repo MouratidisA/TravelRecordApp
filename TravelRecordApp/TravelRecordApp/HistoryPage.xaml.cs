@@ -43,5 +43,20 @@ namespace TravelRecordApp
             if (selectedPost != null)
                 Navigation.PushAsync(new PostDetailPage(selectedPost));
         }
+
+        //TODO implement [DeleteMenuItem_Clicked] action inside ICommand
+        private void DeleteMenuItem_Clicked(object sender, EventArgs e)
+        {
+            var post = ((MenuItem)sender).CommandParameter;
+            ViewModel.DeletePost((Post)post);
+
+            ViewModel.UpdatePosts();
+        }
+        //TODO implement [PostListView_OnRefreshing] action inside ICommand
+        private async void PostListView_OnRefreshing(object sender, EventArgs e)
+        {
+            await ViewModel.UpdatePosts();
+            PostListView.IsRefreshing = false;
+        }
     }
 }

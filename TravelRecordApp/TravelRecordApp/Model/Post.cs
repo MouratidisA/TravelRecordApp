@@ -161,7 +161,6 @@ namespace TravelRecordApp.Model
         }
 
         private DateTimeOffset _createDate;
-
         public DateTimeOffset CreateDate
         {
             get { return _createDate; }
@@ -178,11 +177,23 @@ namespace TravelRecordApp.Model
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+        
 
         public static async void Insert(Post post)
         {
             await App.MobileService.GetTable<Post>().InsertAsync(post);
+        }
+        public static async Task<bool> Delete(Post post)
+        {
+            try
+            {
+                await App.MobileService.GetTable<Post>().DeleteAsync(post);
+                return true;
+            }
+            catch (Exception)
+            {
+               return false;
+            }
         }
 
         public static async Task<List<Post>> Read()
