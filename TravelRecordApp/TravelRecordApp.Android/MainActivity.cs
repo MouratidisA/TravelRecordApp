@@ -16,6 +16,7 @@ namespace TravelRecordApp.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+            global::Xamarin.Forms.Forms.SetFlags("FastRenders_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             global::Xamarin.FormsMaps.Init(this, savedInstanceState);
             CurrentPlatform.Init();
