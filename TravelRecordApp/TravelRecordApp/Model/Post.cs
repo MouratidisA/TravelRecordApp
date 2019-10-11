@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,7 +123,6 @@ namespace TravelRecordApp.Model
 
 
         private Venue _venue;
-
         [JsonIgnore]
         public Venue Venue
         {
@@ -157,6 +157,18 @@ namespace TravelRecordApp.Model
                 UserId = App.User.Id;
 
                 OnPropertyChanged("Venue");
+            }
+        }
+
+        private DateTimeOffset _createDate;
+
+        public DateTimeOffset CreateDate
+        {
+            get { return _createDate; }
+            set
+            {
+                _createDate = value; 
+                OnPropertyChanged("CreateDate");
             }
         }
 

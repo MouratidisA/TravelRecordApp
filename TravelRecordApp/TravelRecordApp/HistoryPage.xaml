@@ -1,14 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TravelRecordApp.HistoryPage">
+             x:Class="TravelRecordApp.HistoryPage"
+             xmlns:Converters="clr-namespace:TravelRecordApp.ViewModel.Converters">
 
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+                <Converters:DateTimeToStringConverter x:Key="Converter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
 
     <ListView x:Name="PostListView" ItemSelected="Handle_ItemSelected">
         <ListView.ItemTemplate>
             <DataTemplate>
-                <TextCell Text="{Binding Experience}"></TextCell>
+                <TextCell Text="{Binding Experience}" Detail="{Binding CreateDate,Converter={StaticResource Converter}}"></TextCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
